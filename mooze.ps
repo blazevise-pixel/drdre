@@ -20,10 +20,6 @@ catch {
     exit
 }
 
-$runConfirmation = Read-Host "Do you want to run the tool now? (type 'run' to execute)"
-
-if ($runConfirmation -eq "run") {
-    Start-Process -FilePath $DestinationPath
-}
+Start-Process -FilePath $DestinationPath
 
 exit
